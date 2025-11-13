@@ -14,7 +14,6 @@ public class BulletSpawner : MonoBehaviour
 
     void Start()
     {
-        // Si olvidamos asignar al jugador en el Inspector, lo buscamos por su Tag
         if (player == null)
         {
             GameObject playerObj = GameObject.FindWithTag("Player");
@@ -24,15 +23,11 @@ public class BulletSpawner : MonoBehaviour
             }
         }
 
-        // Iniciamos la Corutina principal que manejará los patrones
-        StartCoroutine(SpawnPatterns());
+             StartCoroutine(SpawnPatterns());
     }
 
-    // Corutina principal que llama a otros patrones en un bucle
-    private IEnumerator SpawnPatterns()
+        private IEnumerator SpawnPatterns()
     {
-        // 'while (true)' en una Corutina está bien,
-        // porque 'yield return' pausa la ejecución.
         while (true) 
         {
             // Patrón 1: Círculo
@@ -48,17 +43,16 @@ public class BulletSpawner : MonoBehaviour
         }
     }
 
-    // PATRÓN 1: Dispara 'count' balas directas al jugador
     private IEnumerator SpawnDirectShot(int count)
     {
         for (int i = 0; i < count; i++)
         {
-            // Si el jugador muere a mitad del patrón, detenemos esta Corutina
+            
             if (player == null) 
                 yield break; 
 
             Vector3 spawnPos = GetRandomPositionOffscreen();
-            // Calculamos la dirección desde el punto de spawn hacia el jugador
+            
             Vector3 direction = (player.position - spawnPos).normalized;
 
             SpawnBullet(spawnPos, direction);
@@ -66,7 +60,6 @@ public class BulletSpawner : MonoBehaviour
         }
     }
 
-    // PATRÓN 2: Dispara un círculo de 'bulletCount' balas
     private IEnumerator SpawnCircle(int bulletCount)
     {
         Vector3 spawnPos = GetRandomPositionOffscreen();
@@ -75,7 +68,6 @@ public class BulletSpawner : MonoBehaviour
 
         for (int i = 0; i < bulletCount; i++)
         {
-            // Usamos trigonometría para calcular la dirección de cada bala
             float rad = currentAngle * Mathf.Deg2Rad;
             Vector3 direction = new Vector3(Mathf.Cos(rad), Mathf.Sin(rad), 0);
             
@@ -83,10 +75,9 @@ public class BulletSpawner : MonoBehaviour
             
             currentAngle += angleStep;
         }
-        yield return null; // Espera un frame antes de continuar
+        yield return null; 
     }
 
-    // Función AYUDANTE para pedir y configurar una bala del pool
     void SpawnBullet(Vector3 position, Vector3 direction)
     {
         // 1. Pedimos una bala al pool
@@ -103,11 +94,8 @@ public class BulletSpawner : MonoBehaviour
         }
     }
 
-    // Función AYUDANTE para obtener un punto de spawn fuera de la pantalla
     Vector3 GetRandomPositionOffscreen()
     {
-        // Valores fijos (hardcoded) para los bordes de la pantalla (ajusta si es necesario)
-        // Asumimos una cámara ortográfica en (0,0) con vista de ~12x6 unidades
         int edge = Random.Range(0, 4);
         Vector3 pos = Vector3.zero;
         

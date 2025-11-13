@@ -7,7 +7,6 @@ public class GameManager : MonoBehaviour
     [Header("Referencias de Escena")]
     [SerializeField] private GameObject bulletSpawner;
     
-    // 1. Añade estas dos líneas para la UI
     [Header("UI")]
     [SerializeField] private GameObject gameOverScreen;
     [SerializeField] private Button restartButton;
